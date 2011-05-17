@@ -9,12 +9,12 @@ class pyWine:
     def __init__(self):
 
         # Set the Glade file
-        self.gladefile = "pywine.ui"
+        self.gladefile = "MainWindow.ui"
         self.wTree = gtk.Builder()
         self.wTree.add_from_file(os.path.join(os.path.dirname("__file__"), self.gladefile))
 
         # Create our dictionary and connect it
-        dic = {"on_mainWindow\destroy" : gtk.main_quit
+        dic = {"on_MainWindow_destroy" : gtk.main_quit
                , "on_AddWine" : self.onAddWine
                }
         self.wTree.connect_signals(dic)
@@ -43,7 +43,7 @@ class pyWine:
         # Attatch the model to the treeView
         self.wineView.set_model(self.wineList)
 
-        self.mainWindow = self.wTree.get_object("mainWindow")
+        self.mainWindow = self.wTree.get_object("MainWindow")
         self.mainWindow.show_all()
 
     def onAddWine(self, widget):
@@ -88,30 +88,31 @@ class wineDialog:
     def __init__(self, wine = "", winery = "", grape = "", year = ""):
 
         # setup the glade file
-        self.gladefile = "pywine.ui"
+        self.gladefile = "WineDlg.ui"
         # setup the wine that we will return
         self.wine = Wine(wine, winery, grape, year)
 
     def run(self):
         """This function will show the wine Dlg"""
+        self.gladefile = "wineDlg.ui"
 
         # load the dialog from the glade file
-        self.wTree = gtk.Builder
-        self.wTree.add_from_file(os.path.join(os.path.dirname("__file__"), gladefile))
+        self.wTree = gtk.Builder()
+        self.wTree.add_from_file(os.path.join(os.path.dirname("__file__"), self.gladefile))
         # Get the actual dialog widget
-        self.dlg = self.wTree.get_widget("wineDlg")
+        self.dlg = self.wTree.get_object("wineDlg")
         # Get all of the Entry Widgets and set their text
-        self.enWine = self.wTree.get_widget("enWine")
+        self.enWine = self.wTree.get_object("enWine")
         self.enWine.set_text(self.wine.wine)
-        self.enWinery = self.wTree.get_widget("enWinery")
+        self.enWinery = self.wTree.get_object("enWinery")
         self.enWinery.set_text(self.wine.winery)
-        self.enGrape = self.wTree.get_widget("enGrape")
+        self.enGrape = self.wTree.get_object("enGrape")
         self.enGrape.set_text(self.wine.grape)
-        self.enYear = self.wTree.get_widget("enYear")
+        self.enYear = self.wTree.get_object("enYear")
         self.enYear.set_text(self.wine.year)
 
         # run the dialog and store the response
-        self.result = slf.dlg.run()
+        self.result = self.dlg.show_all()
         # get the value of the entry fields
         self.wine.wine = self.enWine.get_text()
         self.wine.winery = self.enWinery.get_text()
